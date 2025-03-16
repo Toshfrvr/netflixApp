@@ -1,13 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white">
+    <nav class="fixed top-0 w-full flex items-center justify-between p-4 bg-black bg-opacity-80 shadow-md z-50">
+        <!-- Logo -->
+        <div class="text-red-600 text-2xl font-bold">NETFLIX</div>
+
+        <!-- Navigation Links -->
+        <ul class="hidden md:flex space-x-6">
+            <li class="cursor-pointer hover:text-gray-400">Home</li>
+            <li class="cursor-pointer hover:text-gray-400">TV Shows</li>
+            <li class="cursor-pointer hover:text-gray-400">Movies</li>
+            <li class="cursor-pointer hover:text-gray-400">Latest</li>
+            <li class="cursor-pointer hover:text-gray-400">My List</li>
+        </ul>
+
+        <!-- Icons -->
+        <div class="flex items-center space-x-4">
+            <span class="cursor-pointer hover:text-gray-400">🔍</span>
+            <span class="cursor-pointer hover:text-gray-400">🔔</span>
+            <span class="cursor-pointer hover:text-gray-400">👤</span>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <div class="relative w-full h-screen">
+        <img id="hero-movie-thmb" alt="Hero Movie" class="w-full h-full object-cover">
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90 flex flex-col justify-end p-8">
+            <h1 id="hero-movie-title" class="text-4xl md:text-6xl font-bold mb-4">...</h1>
+            <p id="hero-movie-desc" class="text-sm md:text-lg max-w-2xl mb-6">
+                ....
+            </p>
+            <div class="flex gap-4">
+                <button class="bg-white text-black px-6 py-2 font-bold rounded">▶ Play</button>
+                <button class="bg-gray-700 px-6 py-2 font-bold rounded">ℹ More Info</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="p-8 bg-black text-sm flex item-end">
+        <div class="max-w-5xl mx-auto">
+            <p class="mb-4">Questions? Call <span class="underline cursor-pointer">000-800-919-1694</span></p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <ul class="space-y-2">
+                    <li class="hover:underline cursor-pointer">FAQ</li>
+                    <li class="hover:underline cursor-pointer">Investor Relations</li>
+                    <li class="hover:underline cursor-pointer">Privacy</li>
+                    <li class="hover:underline cursor-pointer">Speed Test</li>
+                </ul>
+                <ul class="space-y-2">
+                    <li class="hover:underline cursor-pointer">Help Center</li>
+                    <li class="hover:underline cursor-pointer">Jobs</li>
+                    <li class="hover:underline cursor-pointer">Cookie Preferences</li>
+                    <li class="hover:underline cursor-pointer">Legal Notices</li>
+                </ul>
+                <ul class="space-y-2">
+                    <li class="hover:underline cursor-pointer">Account</li>
+                    <li class="hover:underline cursor-pointer">Ways to Watch</li>
+                    <li class="hover:underline cursor-pointer">Corporate Information</li>
+                    <li class="hover:underline cursor-pointer">Only on Netflix</li>
+                </ul>
+                <ul class="space-y-2">
+                    <li class="hover:underline cursor-pointer">Media Center</li>
+                    <li class="hover:underline cursor-pointer">Terms of Use</li>
+                    <li class="hover:underline cursor-pointer">Contact Us</li>
+                </ul>
+            </div>
+
+            <button class="border border-gray-600 px-4 py-1 text-sm">English</button>
+            <p class="mt-4">Netflix India</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_KEY = "50f52bd23250b73445290966a14ca664";
+        const BASE_URL = "https://api.themoviedb.org/3";
+
+        const movies = [];
+        const heroTitle = document.getElementById("hero-movie-title");
+        const heroThumbnail = document.getElementById("hero-movie-thmb");
+        const heroDescription = document.getElementById("hero-movie-desc");
+
+        fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`)
+            .then((res) => res.json())
+            .then((data) => {
+                movies.push(data.results);
+                renderHero(data.results[Math.floor(Math.random() * data.results.length)]);
+            });
+
+        function renderHero(heroMovie) {
+            heroTitle.textContent = heroMovie.title;
+            heroThumbnail.src = `https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`;
+            heroDescription.textContent = heroMovie.overview;
+        }
+        
+    </script>
+</body>
+
 </html>
